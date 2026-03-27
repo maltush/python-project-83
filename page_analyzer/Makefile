@@ -3,6 +3,7 @@ PORT ?= 8000
 
 install:
 	uv sync
+	uv add gunicorn
 
 dev:
 	uv run flask --debug --app page_analyzer:app run
