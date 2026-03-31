@@ -7,9 +7,10 @@ from flask import (
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def home():
-    return "Привет"
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 
 load_dotenv()
 app = Flask(__name__)
