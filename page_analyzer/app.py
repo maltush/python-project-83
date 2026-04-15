@@ -12,8 +12,8 @@ from flask import (
     url_for,
 )
 
-from page_analyzer.url_repository import UrlRepository
-from page_analyzer.url_validator import normalize_url, validate_url
+from url_repository import UrlRepository
+from url_validator import normalize_url, validate_url
 
 
 load_dotenv()
@@ -24,6 +24,8 @@ app = Flask(__name__, template_folder=template_dir)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
 
+conn = psycopg2.connect(DATABASE_URL)
+
 
 @app.route('/')
 def index():
@@ -33,7 +35,7 @@ def index():
 
 @app.route('/urls')
 def urls_get():
-    conn = psycopg2.connect(DATABASE_URL)
+    # conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     urls = repo.get_content()
     return render_template(
@@ -44,7 +46,7 @@ def urls_get():
 
 @app.route('/urls/<int:id>')
 def url_show(id):
-    conn = psycopg2.connect(DATABASE_URL)
+    # conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     messages = get_flashed_messages(with_categories=True)
     url = repo.find(id)
@@ -58,7 +60,7 @@ def url_show(id):
 
 @app.route('/urls', methods=['POST'])
 def url_post():
-    conn = psycopg2.connect(DATABASE_URL)
+    # conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     url = request.form.to_dict()
     errors = validate_url(url['url'])
@@ -82,7 +84,7 @@ def url_post():
 
 @app.route('/urls/<int:id>/checks', methods=['POST'])
 def url_check(id):
-    conn = psycopg2.connect(DATABASE_URL)
+    # conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     url_info = repo.find(id)
     try:
