@@ -12,14 +12,17 @@ from flask import (
     url_for,
 )
 
-from url_repository import UrlRepository
-from url_validator import normalize_url, validate_url
+from .url_repository import UrlRepository
+from .url_validator import normalize_url, validate_url
 
 
 load_dotenv()
 
 BASE_DIR = os.path.dirname(__file__)        # если файл в page_analyzer — ok
 template_dir = os.path.join(BASE_DIR, 'templates')
+
+
+
 app = Flask(__name__, template_folder=template_dir)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
