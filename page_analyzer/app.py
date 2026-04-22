@@ -1,5 +1,6 @@
 import os
 from subprocess import check_call
+
 import psycopg2
 from dotenv import load_dotenv
 from flask import (
@@ -15,12 +16,10 @@ from flask import (
 from .url_repository import UrlRepository
 from .url_validator import normalize_url, validate_url
 
-
 load_dotenv()
 
 BASE_DIR = os.path.dirname(__file__)        # если файл в page_analyzer — ok
 template_dir = os.path.join(BASE_DIR, 'templates')
-
 
 
 app = Flask(__name__, template_folder=template_dir)
@@ -36,11 +35,12 @@ def index():
         'index.html',
     )
 
+
 @app.route('/urls')
 def urls_get():
     # conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
-    urls = repo.get_content()
+    urls = repo.get_content() or []
     return render_template(
         'urls.html',
          urls=urls
@@ -60,6 +60,7 @@ def url_show(id):
         checked_urls=checked_urls,
         messages=messages
     )
+
 
 @app.route('/urls', methods=['POST'])
 def url_post():
@@ -103,7 +104,6 @@ def url_check(id):
     repo.get_checked(data, url_info)
     flash('Страница успешно проверена', 'success')
     return redirect(url_for('url_show', id=id), code=302)
-
 
 
 if __name__ == '__main__':
