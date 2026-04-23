@@ -25,7 +25,7 @@ template_dir = os.path.join(BASE_DIR, 'templates')
 app = Flask(__name__, template_folder=template_dir)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
-
+print('DB=', DATABASE_URL)
 conn = psycopg2.connect(DATABASE_URL)
 
 
@@ -68,9 +68,9 @@ def url_post():
     repo = UrlRepository(conn)
     url = request.form.to_dict()
     errors = validate_url(url['url'])
-
+    
     if errors:
-        flash('Некорректный URL', 'error')
+        flash(errors["url"], 'error')
         return render_template(
             'index.html',
         ), 422
