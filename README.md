@@ -9,7 +9,6 @@ Page Analyzer is a website that analyzes specified pages for SEO readiness, simi
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/maltush/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/maltush/python-project-83/actions)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=maltush_python-project-83&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=maltush_python-project-83)
-[![my check](https://github.com/maltush/python-project-83/actions/workflows/my_workflow.yml/badge.svg)](https://github.com/maltush/python-project-83/actions/workflows/my_workflow.yml)
 ****
 
 [//]: # ([Демонстрация проекта на render.com]https://python-project-83-twh9.onrender.com;)
