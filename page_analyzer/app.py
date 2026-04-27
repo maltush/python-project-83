@@ -102,7 +102,6 @@ def url_check(id):
         flash('Произошла ошибка при проверке', 'error')
         return redirect(url_for('url_show', id=id), code=302)
 
-
     status = response.status_code
     data = check_call(response)
     data['status'] = status
