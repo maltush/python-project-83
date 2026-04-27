@@ -90,10 +90,16 @@ def url_check(id):
     conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     url_info = repo.find(id)
+    print("id=", id)
+    print("url_info=", url_info)
     try:
+        print(1)
+        
         response = request.get(url_info.get('name'))
+        print(2)
         response.raise_for_status()
-    except request.RequestException:
+        print(3)
+    except:
         flash('Произошла ошибка при проверке', 'error')
         return redirect(url_for('url_show', id=id), code=302)
 
