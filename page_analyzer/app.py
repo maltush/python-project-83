@@ -93,15 +93,15 @@ def url_check(id):
     print("id=", id)
     print("url_info=", url_info)
     try:
-        print(1)
         
         response = request.get(url_info.get('name'))
-        print(2)
+    
         response.raise_for_status()
-        print(3)
-    except:
+    
+    except request.RequestException:
         flash('Произошла ошибка при проверке', 'error')
         return redirect(url_for('url_show', id=id), code=302)
+
 
     status = response.status_code
     data = check_call(response)
