@@ -1,7 +1,7 @@
 import os
-from subprocess import check_call
 
 import psycopg2
+import requests
 from dotenv import load_dotenv
 from flask import (
     Flask,
@@ -12,10 +12,9 @@ from flask import (
     url_for,
 )
 
+from .parser import check_data
 from .url_repository import UrlRepository
 from .url_validator import normalize_url, validate_url
-from .parser import check_data
-import requests
 
 load_dotenv()
 
@@ -66,7 +65,7 @@ def url_show(id):
 def url_post():
     conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
-    url = request.form.to_dict()
+    url = requests.form.to_dict()
     errors = validate_url(url['url'])
     
     if errors:
