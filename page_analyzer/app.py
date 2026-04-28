@@ -9,12 +9,13 @@ from flask import (
     get_flashed_messages,
     redirect,
     render_template,
-    request,
     url_for,
 )
 
 from .url_repository import UrlRepository
 from .url_validator import normalize_url, validate_url
+from .parser import check_data
+import requests
 
 load_dotenv()
 
@@ -94,16 +95,16 @@ def url_check(id):
     print("url_info=", url_info)
     try:
         
-        response = request.get(url_info.get('name'))
+        response = requests.get(url_info.get('name'))
     
         response.raise_for_status()
     
-    except request.RequestException:
+    except requests.RequestException:
         flash('Произошла ошибка при проверке', 'error')
         return redirect(url_for('url_show', id=id), code=302)
 
     status = response.status_code
-    data = check_call(response)
+    data = check_data(response)
     data['status'] = status
     repo.get_checked(data, url_info)
     flash('Страница успешно проверена', 'success')
