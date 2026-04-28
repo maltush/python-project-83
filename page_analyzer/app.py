@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(__file__)        # если файл в page_analyzer
 template_dir = os.path.join(BASE_DIR, 'templates')
 
 
-app = flask.Flask(__name__, template_folder=template_dir)
+app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
 print('DB=', DATABASE_URL)
