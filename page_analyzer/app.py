@@ -5,14 +5,14 @@ import requests
 from dotenv import load_dotenv
 from flask import (
     Flask,
-    abort,
     flash,
+    get_flashed_messages,
     redirect,
     render_template,
     request,
     url_for,
-    get_flashed_messages,
 )
+
 from .parser import check_data
 from .url_repository import UrlRepository
 from .url_validator import normalize_url, validate_url
