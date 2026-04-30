@@ -5,21 +5,21 @@ import requests
 from dotenv import load_dotenv
 from flask import (
     Flask,
+    abort,
     flash,
-    get_flashed_messages,
     redirect,
     render_template,
     request,
     url_for,
+    get_flashed_messages,
 )
-
 from .parser import check_data
 from .url_repository import UrlRepository
 from .url_validator import normalize_url, validate_url
 
 load_dotenv()
 
-BASE_DIR = os.path.dirname(__file__)        # если файл в page_analyzer — ok
+BASE_DIR = os.path.dirname(__file__)
 template_dir = os.path.join(BASE_DIR, 'templates')
 
 
@@ -41,9 +41,11 @@ def urls_get():
     conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     urls = repo.get_content() or []
+
+
     return render_template(
         'urls.html',
-         urls=urls
+        urls=urls
     )
 
 
@@ -68,7 +70,7 @@ def url_post():
     repo = UrlRepository(conn)
     url = request.form.to_dict()
     errors = validate_url(url['url'])
-    
+
     if errors:
         flash(errors["url"], 'error')
         return render_template(
@@ -94,11 +96,11 @@ def url_check(id):
     print("id=", id)
     print("url_info=", url_info)
     try:
-        
+
         response = requests.get(url_info.get('name'))
-    
+
         response.raise_for_status()
-    
+
     except requests.RequestException:
         flash('Произошла ошибка при проверке', 'error')
         return redirect(url_for('url_show', id=id), code=302)
@@ -106,6 +108,17 @@ def url_check(id):
     status = response.status_code
     data = check_data(response)
     data['status'] = status
+
+
+    def normalize_field(text):
+        if text is None:
+            return None
+        return text if len(text) <= 255 else text[:252] + '...'
+
+    for key in ('title', 'h1', 'description'):
+        if key in data:
+            data[key] = normalize_field(data.get(key))
+
     repo.get_checked(data, url_info)
     flash('Страница успешно проверена', 'success')
     return redirect(url_for('url_show', id=id), code=302)
