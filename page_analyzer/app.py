@@ -4,15 +4,15 @@ import psycopg2
 import requests
 from dotenv import load_dotenv
 from flask import (
-    Flask,
-    abort,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for,
-    get_flashed_messages,
+Flask,
+flash,
+get_flashed_messages,
+redirect,
+render_template,
+request,
+url_for,
 )
+
 from .parser import check_data
 from .url_repository import UrlRepository
 from .url_validator import normalize_url, validate_url
@@ -41,8 +41,6 @@ def urls_get():
     conn = psycopg2.connect(DATABASE_URL)
     repo = UrlRepository(conn)
     urls = repo.get_content() or []
-
-
     return render_template(
         'urls.html',
         urls=urls
@@ -108,7 +106,6 @@ def url_check(id):
     status = response.status_code
     data = check_data(response)
     data['status'] = status
-
 
     def normalize_field(text):
         if text is None:
