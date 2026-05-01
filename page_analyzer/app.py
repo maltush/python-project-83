@@ -113,7 +113,7 @@ def url_check(id):
     def normalize_field(text):
         if text is None:
             return None
-        return text if len(text) <= 255 else text[:252] + '...'
+        return text if len(text) <= 200 else text[:197] + '...'
 
     for key in ('title', 'h1', 'description'):
         if key in data:
